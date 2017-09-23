@@ -1,6 +1,7 @@
-- Сборка с Phaser - Done
-- Typescipt - Done
-- Normalize CSS - Done
+- ~~Сборка с Phaser~~
+- ~~Typescipt~~
+- ~~Normalize CSS~~
+- ~~Игрок, управляемый с клавиатуры и следящий за камерой~~
 - Автомасштабирование
 - Тесты
 - Lint
