@@ -1,2 +1,6 @@
-- Поставить Hot-Module-Replacement
-- Typescipt
+- Сборка с Phaser - Done
+- Typescipt - Done
+- Normalize CSS - Done
+- Автомасштабирование
+- Тесты
+- Lint
