@@ -16,11 +16,9 @@ class HelloWorldRunner
     private game: Phaser.Game;
     private width: number;
     private height: number;
-    //private earth: Phaser.Sprite;
     private grass: Phaser.Sprite;
     private box: Phaser.Sprite;
     private player: Phaser.Sprite;
-    private playerIsWalking: boolean = false;
 
     /**
      * @param {number} width
@@ -53,26 +51,31 @@ class HelloWorldRunner
     {
         this.game.add.tileSprite(0, 0, 4*window.innerWidth,4*window.innerHeight, 'grass');
         this.game.world.setBounds(0, 0, 4*window.innerWidth,4*window.innerHeight);
-        for (var i = 0; i < 350; i++)
-          {
+        for (let i = 0; i < 350; i++)
+        {
             this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'box');
-          }
-        //this.earth = this.game.add.sprite(100, 100, 'earth');
+        }
+
         this.player = this.game.add.sprite(64, 64, 'player.walk');
         this.player.animations.add('player.walk');
         this.player.anchor.set(0.5, 0.5);
-        //this.earth.anchor.set(0.5, 0.5);
 
         this.player.animations.play('player.walk', 20, true);
         this.game.camera.follow(this.player);
 
         // TODO: добавить отдельный класс реализующий прослойку между управлением и Phaser.Input
         this.game.input.addMoveCallback((pointer, x, y) => {
-            // Направление взгляда игрока
-            let lookAtVector = new Vector(x - this.player.x, y - this.player.y);
+            // Player position relatively to camera
+            let playerInsideCameraPosition = new Vector(
+                this.player.x - this.game.camera.x,
+                this.player.y - this.game.camera.y
+            );
 
-            // Начальная позиция вектора
+            let lookAtVector = new Vector(x, y).subtract(playerInsideCameraPosition);
+
+            // Initial texture orientation
             let initialVector = Vector.upVector();
+            // TODO: this is pretty common, should be included into vector
             let angle = MathFunctions.getAngleBetween(lookAtVector, initialVector);
 
             if (lookAtVector.x < 0) {
@@ -80,9 +83,6 @@ class HelloWorldRunner
                 angle = 2 * Math.PI - angle;
             }
             this.player.rotation = angle;
-
-            console.log(lookAtVector.x, lookAtVector.y);
-            console.log(Math.round(MathFunctions.radiansToDegrees(this.player.rotation)));
         }, null);
     }
 

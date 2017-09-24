@@ -10,7 +10,35 @@ class Vector extends PIXI.Point
     }
 
     /**
-     * Нормализованный вектор, смотрящий вниз
+     * Vector subtraction
+     *
+     * @param {Vector} vec
+     * @returns {Vector}
+     */
+    subtract(vec: Vector): Vector
+    {
+        return new Vector(
+            this.x - vec.x,
+            this.y - vec.y,
+        );
+    }
+
+    /**
+     * Vector addition
+     *
+     * @param {Vector} vec
+     * @returns {Vector}
+     */
+    add(vec: Vector): Vector
+    {
+        return new Vector(
+            this.x + vec.x,
+            this.y + vec.y,
+        );
+    }
+
+    /**
+     * Normalized vector looking down below
      *
      * @returns {Vector}
      */
@@ -46,7 +74,7 @@ function degreesToRadians(degrees: number): number
  * Преобразует градусы в радианы.
  * Rotation считается в радианах.
  *
- * @param {number} degrees
+ * @param {number} radians
  * @returns {number}
  */
 function radiansToDegrees(radians: number): number
