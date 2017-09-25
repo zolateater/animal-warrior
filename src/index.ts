@@ -5,8 +5,8 @@ require('p2');
 require('phaser');
 
 import './Styles/index.less'
-import * as MathFunctions from './Utils/mathFunctions'
-import {Vector} from "./Utils/mathFunctions";
+import Vector from "./Utils/Vector";
+import Player from './Characters/Player'
 
 /**
  * Запуск игры.
@@ -18,7 +18,7 @@ class HelloWorldRunner
     private height: number;
     private grass: Phaser.Sprite;
     private box: Phaser.Sprite;
-    private player: Phaser.Sprite;
+    private player: Player;
 
     /**
      * @param {number} width
@@ -41,7 +41,6 @@ class HelloWorldRunner
 
     preload(): void
     {
-        //this.game.load.image('earth', 'texture/earth.png');
         this.game.load.image('grass', 'texture/grass.png');
         this.game.load.image('box', 'texture/box.png');
         this.game.load.spritesheet('player.walk', 'texture/player_walks.png', 128, 128, 20);
@@ -56,34 +55,24 @@ class HelloWorldRunner
             this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'box');
         }
 
-        this.player = this.game.add.sprite(64, 64, 'player.walk');
-        this.player.animations.add('player.walk');
-        this.player.anchor.set(0.5, 0.5);
+        this.player = new Player();
+        this.player.sprite = this.game.add.sprite(64, 64, 'player.walk');
+        this.player.sprite.animations.add('player.walk');
+        this.player.sprite.anchor.set(0.5, 0.5);
 
-        this.player.animations.play('player.walk', 20, true);
-        this.game.camera.follow(this.player);
+        this.game.camera.follow(this.player.sprite);
 
         // TODO: добавить отдельный класс реализующий прослойку между управлением и Phaser.Input
         this.game.input.addMoveCallback((pointer, x, y) => {
-            // Player position relatively to camera
-            let playerInsideCameraPosition = new Vector(
-                this.player.x - this.game.camera.x,
-                this.player.y - this.game.camera.y
+            // Cursor position in world coordinates
+            let worldPointerPosition = new Vector(
+                this.game.camera.x + x,
+                this.game.camera.y + y
             );
 
-            let lookAtVector = new Vector(x, y).subtract(playerInsideCameraPosition);
-
-            // Initial texture orientation
-            let initialVector = Vector.upVector();
-            // TODO: this is pretty common, should be included into vector
-            let angle = MathFunctions.getAngleBetween(lookAtVector, initialVector);
-
-            if (lookAtVector.x < 0) {
-                // Хитрый трюк, такой хитрый
-                angle = 2 * Math.PI - angle;
-            }
-            this.player.rotation = angle;
+            this.player.lookAt(worldPointerPosition);
         }, null);
+
     }
 
     update(): void
@@ -94,30 +83,30 @@ class HelloWorldRunner
         // TODO: вынести в отдельную прослойку
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.W))
         {
-            this.player.y -= 10;
+            this.player.sprite.y -= 10;
             playerIsWalking = true;
         }
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.S))
         {
-            this.player.y += 10;
+            this.player.sprite.y += 10;
             playerIsWalking = true;
         }
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.D))
         {
-            this.player.x += 10;
+            this.player.sprite.x += 10;
             playerIsWalking = true;
         }
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.A))
         {
-            this.player.x -= 10;
+            this.player.sprite.x -= 10;
             playerIsWalking = true;
         }
 
         if (playerIsWalking) {
-            this.player.animations.play('player.walk', 30, true);
+            this.player.sprite.animations.play('player.walk', 30, true);
         }
         else {
-            this.player.animations.stop('player.walk', true);
+            this.player.sprite.animations.stop('player.walk', true);
         }
     }
 }
