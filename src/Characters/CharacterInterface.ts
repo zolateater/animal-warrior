@@ -8,6 +8,6 @@ export default interface CharacterInterface
     // Rotates a charachter, so it should watch on some point at the world
     lookAt(vector: Vector): void;
 
-    // Orogonal phaser sprite
+    // Ortogonal phaser sprite
     sprite: Phaser.Sprite;
 }

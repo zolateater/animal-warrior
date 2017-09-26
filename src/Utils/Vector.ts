@@ -68,4 +68,17 @@ export default class Vector extends PIXI.Point
     {
         return Math.acos(this.scalarProduct(vec) / (this.getLength() * vec.getLength()));
     }
+
+    // Returns angle betweed vectors counting from clockwords
+    // in radians
+    angleBetweenClockwords(vec: Vector): number
+    {
+      let angle = this.angleBetween(vec);
+
+      if (vec.x - this.x < 0) {
+        angle = 2 * Math.PI - angle;
+      }
+
+      return angle;
+    }
 }

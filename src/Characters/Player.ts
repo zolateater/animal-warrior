@@ -3,6 +3,8 @@ import CharacterInterface from "./CharacterInterface";
 
 export default class Player implements CharacterInterface
 {
+  public static MOVE_SPEED: number = 300;
+
   sprite: Phaser.Sprite;
 
   lookAt(vec: Vector): void
