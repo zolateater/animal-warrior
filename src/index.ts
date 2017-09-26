@@ -19,6 +19,7 @@ class HelloWorldRunner
     private grass: Phaser.Sprite;
     private box: Phaser.Sprite;
     private player: Player;
+    private boxes: Phaser.Group;
 
     /**
      * @param {number} width
@@ -50,15 +51,24 @@ class HelloWorldRunner
     {
         this.game.add.tileSprite(0, 0, 4*window.innerWidth,4*window.innerHeight, 'grass');
         this.game.world.setBounds(0, 0, 4*window.innerWidth,4*window.innerHeight);
+
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.boxes = this.game.add.group();
+        this.boxes.enableBody = true;
+
         for (let i = 0; i < 350; i++)
         {
-            this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'box');
+          let box = this.boxes.create(this.game.world.randomX, this.game.world.randomY, 'box');
+          box.body.immovable = true;
         }
 
         this.player = new Player();
         this.player.sprite = this.game.add.sprite(64, 64, 'player.walk');
         this.player.sprite.animations.add('player.walk');
         this.player.sprite.anchor.set(0.5, 0.5);
+
+        this.game.physics.arcade.enable(this.player.sprite);
+        this.player.sprite.body.collideWorldBounds = true;
 
         this.game.camera.follow(this.player.sprite);
 
@@ -77,6 +87,7 @@ class HelloWorldRunner
 
     update(): void
     {
+        this.game.physics.arcade.collide(this.player, this.boxes);
         //this.earth.rotation += 0.01;
         let playerIsWalking = false;
 
