@@ -9,8 +9,6 @@ import Vector from "./Utils/Vector";
 import Player from './Characters/Player'
 import DemoLevelState from './State/DemoLevelState';
 
-const PLAYER_SPEED = 300;
-
 /**
  * Запуск игры.
  */
@@ -20,6 +18,7 @@ class HelloWorldRunner
     private width: number;
     private height: number;
     private state: Phaser.State;
+
 
     constructor(width: number, height: number, initialState: Phaser.State)
     {
