@@ -9,7 +9,7 @@ export default class Player implements CharacterInterface
 
   sprite: Phaser.Sprite;
 
-  lookAt(vec: Number): void
+  lookAt(vec: Vector): void
   {
     this.sprite.rotation = Vector.upVector().angleBetweenClockwords(
       vec.subtract(new Vector(this.sprite.x, this.sprite.y))
