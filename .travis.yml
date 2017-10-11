@@ -3,3 +3,10 @@ cache:
   directories:
     - "node_modules"
 script: npm run build
+notifications:
+  email:
+    recipients:
+      - zolateater@gmail.com
+      - mark.adam4292@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
