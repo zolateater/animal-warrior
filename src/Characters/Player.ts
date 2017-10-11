@@ -1,24 +1,18 @@
 import Vector from "../Utils/Vector";
 import CharacterInterface from "./CharacterInterface";
 
+// TODO: create default charachter class and set action handling
 export default class Player implements CharacterInterface
 {
+  // TODO: make
   public static MOVE_SPEED: number = 300;
 
   sprite: Phaser.Sprite;
 
-  lookAt(vec: Vector): void
+  lookAt(vec: Number): void
   {
-    let angle = Vector.upVector().angleBetween(
+    this.sprite.rotation = Vector.upVector().angleBetweenClockwords(
       vec.subtract(new Vector(this.sprite.x, this.sprite.y))
     );
-
-    if (vec.x - this.sprite.x < 0) {
-        // Хитрый трюк, такой хитрый
-        angle = 2 * Math.PI - angle;
-    }
-
-    this.sprite.rotation = angle;
-
   }
 }
